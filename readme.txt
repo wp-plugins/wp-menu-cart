@@ -1,4 +1,4 @@
-=== Woocommerce Menu Cart ===
+=== WP Menu Cart ===
 Contributors: jprummer, pomegranate
 Donate link: https://www.wpovernight.com/donate
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
