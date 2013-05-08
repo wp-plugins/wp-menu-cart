@@ -1,0 +1,211 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Menu Cart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-16 11:20+0100\n"
+"PO-Revision-Date: 2013-04-22 19:56-0700\n"
+"Last-Translator: Ewout Fernhout <chocolade@extrapuur.nl>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: wp-menu-cart-pro.php:182 wp-menu-cart-pro.php:259
+msgid "View your shopping cart"
+msgstr "Bekijk je winkelwagen"
+
+#: wp-menu-cart-pro.php:183
+msgid "Start shopping"
+msgstr "Ga naar de winkel."
+
+#: wp-menu-cart-pro.php:184
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d artikel"
+msgstr[1] "%d artikelen"
+
+#: wp-menu-cart-pro.php:266
+msgid "your cart is currently empty"
+msgstr "uw winkelwagen is leeg"
+
+#: wp-menu-cart-pro.php:293
+msgid "Menu Cart requires a shop plugin to be active"
+msgstr ""
+
+#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
+#, php-format
+msgid "%1$s%2$s"
+msgstr ""
+
+#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
+msgid "2"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:27
+msgid "Plugin settings"
+msgstr "Plugin instellingen"
+
+#: includes/wpmenucart-settings.php:34
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:47
+msgid ""
+"Enter your order confirmation number to receive automated updates "
+"(<i>format: #xxxxx</i>)"
+msgstr ""
+"Vul je order nummer in om automatische updates te ontvangen (<i>format: "
+"#xxxxx</i>)"
+
+#: includes/wpmenucart-settings.php:61
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr "Selecteer de menu's waarin je Menu Cart wilt laten weergeven"
+
+#: includes/wpmenucart-settings.php:84
+msgid "Always display cart, even if it's empty"
+msgstr "Geef het winkelwagentje altijd weer, ook wanneer deze leeg is."
+
+#: includes/wpmenucart-settings.php:96
+msgid "Display shopping cart icon."
+msgstr "Geef het winkelwagen icoontje weer."
+
+#: includes/wpmenucart-settings.php:108
+msgid "Display cart contents in menu fly-out."
+msgstr "Geef inhoud van het winkelwagentje weer in fly-out"
+
+#: includes/wpmenucart-settings.php:120
+msgid "Set maximum number of products to display in fly-out"
+msgstr "Stel het maximale aantal producten dat in de fly-out wordt weergegeven"
+
+#: includes/wpmenucart-settings.php:145
+msgid "Choose a cart icon."
+msgstr "Kies een winkelwagen icoontje"
+
+#: includes/wpmenucart-settings.php:174
+msgid "What would you like to display in the menu?"
+msgstr "Wat wil je in het menu weergeven?"
+
+#: includes/wpmenucart-settings.php:182
+msgid "Items Only."
+msgstr "Alleen aantal artikelen."
+
+#: includes/wpmenucart-settings.php:183
+msgid "Price Only."
+msgstr "Alleen prijs."
+
+#: includes/wpmenucart-settings.php:184
+msgid "Both price and items."
+msgstr "Zowel prijs als aantal artikelen."
+
+#: includes/wpmenucart-settings.php:191
+msgid "Select the alignment that looks best with your menu."
+msgstr "Kies de uitlijning die het beste bij jouw menu past"
+
+#: includes/wpmenucart-settings.php:199
+msgid "Align Left."
+msgstr "Links uitlijnen."
+
+#: includes/wpmenucart-settings.php:200
+msgid "Align Right."
+msgstr "Rechts uitlijnen."
+
+#: includes/wpmenucart-settings.php:201
+msgid "Default Menu Alignment."
+msgstr "Standaard uitlijning."
+
+#: includes/wpmenucart-settings.php:208
+msgid "Enter a custom CSS class (optional)"
+msgstr "Geef de naam van een custom CSS class (optioneel)"
+
+#: includes/wpmenucart-settings.php:228
+msgid "Menu Cart Pro"
+msgstr "Menu Cart Pro"
+
+#: includes/wpmenucart-settings.php:229
+msgid "Menu Cart Pro Setup"
+msgstr "Menu Cart Pro Instellingen"
+
+#: includes/wpmenucart-settings.php:298
+msgid "WordPress Menu Cart Pro"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:323
+#, php-format
+msgid ""
+"For our custom CSS service %sClick here%s. Be sure to use the coupon code "
+"<strong>proservice</strong> at checkout. For support, visit %s or email %s"
+msgstr ""
+"%sKlik hier%s voor onze custom CSS service. Gebruik de coupon code "
+"<strong>proservice</strong> bij het afrekenen. Ga naar %s voor support of "
+"email %s"
+
+#: includes/wpmenucart-settings.php:561
+msgid ""
+"<strong>Please note:</strong> you need to open your website in a new tab/"
+"browser window after updating the cart icon for the change to be visible!"
+msgstr ""
+"<strong>Let op:</strong> om het nieuwe cart icoontje te zien dien je de "
+"website te openen in een nieuwe tab/browser venster!"
+
+#: includes/wpmenucart-settings.php:600
+msgid "Menu Cart"
+msgstr "Menu Cart"
+
+#: includes/wpmenucart-updater.php:76
+msgid ""
+"An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
+"\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+msgstr ""
+"Er is een onverwachte HTTP fout opgetreiden bij de API aanvraag.</p> <p><a "
+"href=\"?\" onclick=\"document.location.reload(); return false;\">Probeer "
+"opnieuw</a>"
+
+#: includes/wpmenucart-updater.php:81
+msgid "An unknown error occurred"
+msgstr "Er is een onbekende fout opgetreden"
+
+#~ msgid ""
+#~ "WooCommerce Menu Cart depends on <a href=\"%s\">WooCommerce</a> to work!"
+#~ msgstr ""
+#~ "WooCommerce Menu Cart heeft <a href=\"%s\">WooCommerce</a> om te kunnen "
+#~ "functioneren!"
+
+#~ msgid ""
+#~ "The free version of WooCommerce Menu Cart is still active, it needs to be "
+#~ "disabled before activating this version"
+#~ msgstr ""
+#~ "De gratis versie van WooCommerce Menu Cart is nog actief, deze dient de "
+#~ "deactiveerd te worden voordat de Pro versie geactiveerd wordt."
+
+#~ msgid "This feature only available in"
+#~ msgstr "Deze optie is alleen beschikbaar in"
+
+#~ msgid "Additional icons are only available in"
+#~ msgstr "Aanvullende icoontjes zijn alleen beschikbaar in"
+
+#~ msgid "Display Flyout."
+#~ msgstr "Geef flyout weer."
+
+#~ msgid "Set the name of the menu you want to display"
+#~ msgstr ""
+#~ "Voer de naam in van het menu waarin je het winkelwagentje wilt weergeven"
+
+#~ msgid ""
+#~ "Let's keep this simple! Just check the boxes next to the features you "
+#~ "want."
+#~ msgstr ""
+#~ "Super eenvoudig: geef simpelweg de vakjes naast de features zoals jij ze "
+#~ "wilt gebruiken een vinkje."
+
+#~ msgid "Save Changes"
+#~ msgstr "Opslaan"
