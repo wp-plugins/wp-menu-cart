@@ -10,7 +10,7 @@ Automatically displays a shopping cart in your menu bar.
 
 == Description ==
 
-**Compatible with 5 major WordPress Ecommerce platforms**
+**Compatible with 3 major WordPress Ecommerce platforms**
 
 This plugin installs a shopping cart button in the navigation bar. The plugin takes less than a minute to setup, 
 and includes the following options:
@@ -30,21 +30,21 @@ Finally, the cart automatically conforms to your site's styles, leaving you with
 
 Compatibility:
 
-*WooCommerce
-*Easy Digital Downloads - Coming Soon
-*Eshop
-*WP-Ecommerce - Coming Soon
-*Jigoshop
+* WooCommerce
+* Easy Digital Downloads - Coming Soon
+* Eshop
+* WP-Ecommerce - Coming Soon
+* Jigoshop
 
 Translations:
 
-*Danish
-*Dutch
-*English
-*French
-*Italian
-*Portuguese
-*Russian
+* Danish
+* Dutch
+* English
+* French
+* Italian
+* Portuguese
+* Russian
 
 == Installation ==
 
