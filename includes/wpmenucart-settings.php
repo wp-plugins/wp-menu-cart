@@ -276,7 +276,7 @@ class WpMenuCart_Settings {
 			'shop_plugin'		=> $active_shop_plugins,
 		);
 
-		update_option( 'wpmenucart', $default );
+		add_option( 'wpmenucart', $default );
 	}
 
 	/**
@@ -287,7 +287,7 @@ class WpMenuCart_Settings {
 	
 		<div class="wrap">
 			<div class="icon32" id="icon-options-general"><br /></div>
-			<h2><?php _e('WP Menu Cart Pro','wpmenucart') ?></h2>
+			<h2><?php _e('WP Menu Cart','wpmenucart') ?></h2>
 				<?php 
 				//global $options;
 				//print_r($options); //for debugging
@@ -319,7 +319,7 @@ class WpMenuCart_Settings {
 			});
 			</script>
 			<div style="line-height: 20px; background: #F3F3F3;-moz-border-radius: 3px;border-radius: 3px;padding: 10px;-moz-box-shadow: 0 0 5px #ff0000;-webkit-box-shadow: 0 0 5px#ff0000;box-shadow: 0 0 5px #ff0000;padding: 10px;margin:0px auto; font-size: 13.8px;width: 60%;float: left"> 
-				<h2><?php _e('Get WP Cart Pro!','wpmenucart') ?></h2>
+				<h2><?php _e('Get WP Menu Cart Pro!','wpmenucart') ?></h2>
 				<br>
 				<strong><?php _e('Limited Offer:','wpmenucart') ?> <span style="color: red"><?php _e('20% off!','wpmenucart') ?></span></strong>			
 				<br>
