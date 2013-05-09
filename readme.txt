@@ -6,7 +6,7 @@ Requires at least: 3.4
 Tested up to: 3.5.1
 Stable tag: 2.0.1
 
-Automatically displays a shopping cart in your menu bar.
+Automatically displays a shopping cart in your menu bar. Works with WooCommerce, Eshop and Jigoshop
 
 == Description ==
 
