@@ -3,7 +3,7 @@
 Plugin Name: WP Menu Cart
 Plugin URI: www.wpovernight.com/plugins
 Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
-Version: 2.1.1
+Version: 2.1.2
 Author: Jeremiah Prummer, Ewout Fernhout
 Author URI: www.wpovernight.com/about
 License: GPL2
@@ -36,9 +36,19 @@ class WpMenuCart {
 					include_once( 'includes/wpmenucart-jigoshop.php' );
 					$this->shop = new WPMenuCart_Jigoshop();
 					break;
+				case 'wp-e-commerce':
+					include_once( 'includes/wpmenucart-wpec.php' );
+					$this->shop = new WPMenuCart_WPEC();
+                                        add_action("wp_enqueue_scripts", array( &$this, 'load_jquery' ), 0 );
+					break;
 				case 'eshop':
 					include_once( 'includes/wpmenucart-eshop.php' );
 					$this->shop = new WPMenuCart_eShop();
+					break;
+				case 'easy-digital-downloads':
+					include_once( 'includes/wpmenucart-edd.php' );
+					$this->shop = new WPMenuCart_EDD();
+                                        add_action("wp_enqueue_scripts", array( &$this, 'load_jquery' ), 0 );
 					break;
 			}
 		}
@@ -46,6 +56,9 @@ class WpMenuCart {
 		add_action( 'plugins_loaded', array( &$this, 'wpmenucart_languages' ), 0 );
 
 		add_action('wp_print_styles', array( &$this, 'load_styles' ), 0 );
+                
+                add_action('wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
+                add_action('wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
 		//grab menu names
 		if ( isset( $this->options['menu_name_1'] ) && $this->options['menu_name_1'] != '0' ) {
@@ -70,7 +83,30 @@ class WpMenuCart {
 		load_plugin_textdomain( 'wpmenucart', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
-	 
+        
+	/**
+	 * Load JS
+	 */        
+        public function load_jquery() {
+
+            wp_enqueue_script(
+				'wpmenucart',
+				plugins_url( '/javascript/wpmenucart.js' , __FILE__ ),
+					array( 'jquery' )
+            );
+            
+            wp_localize_script(  
+   				'wpmenucart-ajax-function',  
+   				'wpmenucart_ajax',  
+   					array(  
+       					'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
+       					'nonce' => wp_create_nonce('wpmenucart')  
+   					)  
+			);
+
+        }
+        
+        
 	/**
 	 * Load CSS
 	 */
@@ -114,7 +150,7 @@ class WpMenuCart {
 		$item_data = $this->shop->menu_item();
 
 		if ($item_data['cart_contents_count'] > 0 || isset($this->options['always_display'])) {
-			$items .= '<li class="'.$classes.'">' . $wpmenucart_menu_item . '</li>';
+			$items .= '<li class="'.$classes.'" id="wpmenucartli">' . $wpmenucart_menu_item . '</li>';
 		}
 
 		return $items;
@@ -184,27 +220,38 @@ class WpMenuCart {
 
 		return $menu_item;		
 	}
+        
+        public function wpmenucart_ajax() {
+            $variable = $this->wpmenucart_menu_item();
+            echo $variable;
+            die();
+        }
 }
 
 /**
- * Shop plugin active, no old versions? Good to go!
+ * Hide notifications
+ */
+
+if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
+	update_option( 'wpmenucart_shop_check', 'hide' );
+}
+
+/**
+ * Notify user of missing shop plugins & active old versions.
  */
 
 $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-$wpmenucart_load = 'yes';
-if ( count(wpmenucart_get_shop_plugins()) == 0 ) {
+$wpmenucart_shop_check = get_option( 'wpmenucart_shop_check' );
+
+if ( count(wpmenucart_get_shop_plugins()) == 0 && $wpmenucart_shop_check != 'hide' ) {
 	add_action( 'admin_notices', 'wpmenucart_no_shop_plugin_active' );
-	$wpmenucart_load = 'no';
 }
 
 if ( count(wpmenucart_check_old_versions()) > 0 ) {
 	add_action( 'admin_notices', 'wpmenucart_woocommerce_version_active' );
-	$wpmenucart_load = 'no';
 }
 
-if ($wpmenucart_load != 'no') { //We're safe! :o)
-	$wpMenuCart = new WpMenuCart();
-} 
+$wpMenuCart = new WpMenuCart();
 
 /**
  * Fallback notices
@@ -212,8 +259,8 @@ if ($wpmenucart_load != 'no') { //We're safe! :o)
  * @return string Fallack notice.
  */
 function wpmenucart_no_shop_plugin_active() {
-	$error = __( 'Menu Cart requires a shop plugin to be active' , 'wpmenucart' );
-	$message = '<div class="error"><p>' . $error . '</p></div>';
+	$error = __( 'WP Menu Cart couldn\'t detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wpmenucart' );
+	$message = sprintf('<div class="error"><p>%1$s. <a href="%2$s">%3$s</a></p></div>', $error, add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), __( 'Hide this notice', 'wpmenucart' ) );
 	echo $message;
 }
 
@@ -234,7 +281,9 @@ function wpmenucart_get_shop_plugins() {
 	$shop_plugins = array (
 		'WooCommerce'				=> 'woocommerce/woocommerce.php',
 		'Jigoshop'					=> 'jigoshop/jigoshop.php',
+		'WP e-Commerce'				=> 'wp-e-commerce/wp-shopping-cart.php',
 		'eShop'						=> 'eshop/eshop.php',
+		'Easy Digital Downloads'	=> 'easy-digital-downloads/easy-digital-downloads.php',
 	);
 		
 	$active_shop_plugins = array_intersect($shop_plugins,$active_plugins);

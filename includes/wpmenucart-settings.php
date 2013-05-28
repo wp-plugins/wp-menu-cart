@@ -492,7 +492,7 @@ class WpMenuCart_Settings {
 			$box = sprintf( '<select name="%1$s[%2$s]" id="%1$s[%2$s]"%3$s>', $menu, $id, $disabled);
 			$box .= sprintf( '<option value="%s"%s>%s</option>', '0', selected( $current, '0', false ), '' );
 			
-			foreach ( $boxes['options'] as $key => $label ) {
+			foreach ( (array) $boxes['options'] as $key => $label ) {
 				$box .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $current, $key, false ), $label );
 			}
 			$box .= '</select>';
