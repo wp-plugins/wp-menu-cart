@@ -10,7 +10,7 @@ Automatically displays a shopping cart in your menu bar. Works with WooCommerce,
 
 == Description ==
 
-**Works with WooCommerce, Eshop and Jigoshop**
+**Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop**
 
 This plugin installs a shopping cart button in the navigation bar. The plugin takes less than a minute to setup, 
 and includes the following options:
