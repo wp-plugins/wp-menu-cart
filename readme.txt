@@ -72,6 +72,9 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 == Changelog ==
 
+= 2.1.3 =
+EDD total price bug fixed
+
 = 2.1.2 =
 
 Added WP-Ecommerce and EDD
