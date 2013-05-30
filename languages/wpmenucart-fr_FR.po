@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: WooCommerce Menu Cart\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-16 11:20+0100\n"
-"PO-Revision-Date: 2013-04-22 19:56-0700\n"
-"Last-Translator: Ewout Fernhout <chocolade@extrapuur.nl>\n"
+"PO-Revision-Date: 2013-05-30 00:15-0700\n"
+"Last-Translator: Jeremiah Prummer <jprummer@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
@@ -21,22 +21,22 @@ msgstr ""
 
 #: wp-menu-cart-pro.php:182 wp-menu-cart-pro.php:259
 msgid "View your shopping cart"
-msgstr "Bekijk je winkelwagen"
+msgstr "Voir mon panier"
 
 #: wp-menu-cart-pro.php:183
 msgid "Start shopping"
-msgstr "Ga naar de winkel."
+msgstr "Faire des achats"
 
 #: wp-menu-cart-pro.php:184
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] "%d artikel"
-msgstr[1] "%d artikelen"
+msgstr[0] "%d Article"
+msgstr[1] "%d Articles"
 
 #: wp-menu-cart-pro.php:266
 msgid "your cart is currently empty"
-msgstr "uw winkelwagen is leeg"
+msgstr "Mon panier est vide"
 
 #: wp-menu-cart-pro.php:293
 msgid "Menu Cart requires a shop plugin to be active"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: includes/wpmenucart-settings.php:27
 msgid "Plugin settings"
-msgstr "Plugin instellingen"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:34
 msgid "Select which e-commerce plugin you would like Menu Cart to work with"
@@ -64,76 +64,74 @@ msgid ""
 "Enter your order confirmation number to receive automated updates "
 "(<i>format: #xxxxx</i>)"
 msgstr ""
-"Vul je order nummer in om automatische updates te ontvangen (<i>format: "
-"#xxxxx</i>)"
 
 #: includes/wpmenucart-settings.php:61
 msgid "Select the menu(s) in which you want to display the Menu Cart"
-msgstr "Selecteer de menu's waarin je Menu Cart wilt laten weergeven"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:84
 msgid "Always display cart, even if it's empty"
-msgstr "Geef het winkelwagentje altijd weer, ook wanneer deze leeg is."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:96
 msgid "Display shopping cart icon."
-msgstr "Geef het winkelwagen icoontje weer."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:108
 msgid "Display cart contents in menu fly-out."
-msgstr "Geef inhoud van het winkelwagentje weer in fly-out"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:120
 msgid "Set maximum number of products to display in fly-out"
-msgstr "Stel het maximale aantal producten dat in de fly-out wordt weergegeven"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:145
 msgid "Choose a cart icon."
-msgstr "Kies een winkelwagen icoontje"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:174
 msgid "What would you like to display in the menu?"
-msgstr "Wat wil je in het menu weergeven?"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:182
 msgid "Items Only."
-msgstr "Alleen aantal artikelen."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:183
 msgid "Price Only."
-msgstr "Alleen prijs."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:184
 msgid "Both price and items."
-msgstr "Zowel prijs als aantal artikelen."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:191
 msgid "Select the alignment that looks best with your menu."
-msgstr "Kies de uitlijning die het beste bij jouw menu past"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:199
 msgid "Align Left."
-msgstr "Links uitlijnen."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:200
 msgid "Align Right."
-msgstr "Rechts uitlijnen."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:201
 msgid "Default Menu Alignment."
-msgstr "Standaard uitlijning."
+msgstr ""
 
 #: includes/wpmenucart-settings.php:208
 msgid "Enter a custom CSS class (optional)"
-msgstr "Geef de naam van een custom CSS class (optioneel)"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:228
 msgid "Menu Cart Pro"
-msgstr "Menu Cart Pro"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:229
 msgid "Menu Cart Pro Setup"
-msgstr "Menu Cart Pro Instellingen"
+msgstr ""
 
 #: includes/wpmenucart-settings.php:298
 msgid "WordPress Menu Cart Pro"
@@ -145,34 +143,26 @@ msgid ""
 "For our custom CSS service %sClick here%s. Be sure to use the coupon code "
 "<strong>proservice</strong> at checkout. For support, visit %s or email %s"
 msgstr ""
-"%sKlik hier%s voor onze custom CSS service. Gebruik de coupon code "
-"<strong>proservice</strong> bij het afrekenen. Ga naar %s voor support of "
-"email %s"
 
 #: includes/wpmenucart-settings.php:561
 msgid ""
 "<strong>Please note:</strong> you need to open your website in a new tab/"
 "browser window after updating the cart icon for the change to be visible!"
 msgstr ""
-"<strong>Let op:</strong> om het nieuwe cart icoontje te zien dien je de "
-"website te openen in een nieuwe tab/browser venster!"
 
 #: includes/wpmenucart-settings.php:600
 msgid "Menu Cart"
-msgstr "Menu Cart"
+msgstr ""
 
 #: includes/wpmenucart-updater.php:76
 msgid ""
 "An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
 "\" onclick=\"document.location.reload(); return false;\">Try again</a>"
 msgstr ""
-"Er is een onverwachte HTTP fout opgetreiden bij de API aanvraag.</p> <p><a "
-"href=\"?\" onclick=\"document.location.reload(); return false;\">Probeer "
-"opnieuw</a>"
 
 #: includes/wpmenucart-updater.php:81
 msgid "An unknown error occurred"
-msgstr "Er is een onbekende fout opgetreden"
+msgstr ""
 
 #~ msgid ""
 #~ "WooCommerce Menu Cart depends on <a href=\"%s\">WooCommerce</a> to work!"
