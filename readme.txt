@@ -72,6 +72,10 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 == Changelog ==
 
+= 2.1.5 =
+
+Fix: Edd and WP e-Commerce ajax.
+
 = 2.1.4 =
 
 Fixed WP e-Commerce ajax conflict and uploaded proper French translation.
@@ -88,8 +92,19 @@ Added WP-Ecommerce and EDD
 
 Initial Release
 
-
 == Upgrade Notice ==
+
+= 2.1.5 =
+
+Fix: Edd and WP e-Commerce ajax.
+
+= 2.1.4 =
+
+Fixed WP e-Commerce ajax conflict and uploaded proper French translation.
+
+= 2.1.3 =
+
+EDD total price bug fixed
 
 = 2.1.2 =
 

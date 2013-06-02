@@ -1,14 +1,19 @@
 /* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * JS for WPEC and EDD
  */
-
-
-jQuery(document).ready(function($) {
-                    $("div.wpsc_buy_button_container > input.wpsc_buy_button").click(function(){
-                        $('#wpmenucartli').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);                        
-                    });
-                    $(".edd-add-to-cart").click(function(){
-                        $('#wpmenucartli').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);
-                    });
-                });
+jQuery(document).ready(function($) { 
+  $("input.edd-add-to-cart").click(function(){
+      WPMenucart_Timeout();
+  });
+  $("div.wpsc_buy_button_container > input.wpsc_buy_button").click(function(){
+      WPMenucart_Timeout();
+  });
+    
+  function WPMenucart_Timeout() {
+      setTimeout(function () { WPMenucart_Load_JS(); }, 1000);
+  }
+    
+  function WPMenucart_Load_JS() {
+    $('#wpmenucartli').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);
+  } 
+});
