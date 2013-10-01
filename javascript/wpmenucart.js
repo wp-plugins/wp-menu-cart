@@ -1,11 +1,13 @@
 /* 
- * JS for WPEC and EDD
+ * JS for WPEC, EDD and eShop
+ * 
+ * AJAX not working for you? Look for the (specific) class attached to your 'add to cart' button (example: YOURCLASS)
+ * The add it to the list of class selectors in the jQuery command:
+ * $(".edd-add-to-cart, .wpsc_buy_button, .eshopbutton, div.cartopt p label.update input#update, .YOURCLASS").click(function(){
+ * 
  */
 jQuery(document).ready(function($) { 
-  $("input.edd-add-to-cart").click(function(){
-      WPMenucart_Timeout();
-  });
-  $("div.wpsc_buy_button_container > input.wpsc_buy_button").click(function(){
+  $(".edd-add-to-cart, .wpsc_buy_button, .eshopbutton, div.cartopt p label.update input#update").click(function(){
       WPMenucart_Timeout();
   });
     
