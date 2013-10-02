@@ -4,6 +4,7 @@ class WpMenuCart_Settings {
 	public function __construct() {
 		add_action( 'admin_init', array( &$this, 'init_settings' ) ); // Registers settings
 		add_action( 'admin_menu', array( &$this, 'wpmenucart_add_page' ) );
+		add_filter( 'plugin_action_links_'.WpMenuCart::$plugin_basename, array( &$this, 'wpmenucart_add_settings_link' ) );
 
 		//Menu admin, not using for now (very complex ajax structure...)
 		//add_action( 'admin_init', array( &$this, 'wpmenucart_add_meta_box' ) );
@@ -228,6 +229,15 @@ class WpMenuCart_Settings {
 	}
 	
 	/**
+	 * Add settings link to plugins page
+	 */
+	public function wpmenucart_add_settings_link( $links ) {
+	    $settings_link = '<a href="options-general.php?page=wpmenucart_options_page">'. __( 'Settings', 'woocommerce' ) . '</a>';
+	  	array_push( $links, $settings_link );
+	  	return $links;
+	}
+
+	/**
 	 * Styles for settings page
 	 */
 	public function wpmenucart_admin_styles() {
@@ -356,7 +366,8 @@ class WpMenuCart_Settings {
 	 */
 	public function get_menu_array() {
 		$menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
-	
+		$menu_list = array();
+
 		foreach ( $menus as $menu ) {
 			$menu_list[$menu->slug] = $menu->name;
 		}
