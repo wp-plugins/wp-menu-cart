@@ -4,7 +4,7 @@ Donate link: https://www.wpovernight.com/donate
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
 Requires at least: 3.4
 Tested up to: 3.6.1
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop
 
@@ -72,6 +72,10 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 == Changelog ==
 
+= 2.2.2 =
+
+* Jigoshop Bug Fix
+
 = 2.2.1 =
 
 * WPML bug fixes
@@ -104,6 +108,21 @@ Added WP-Ecommerce and EDD
 Initial Release
 
 == Upgrade Notice ==
+
+= 2.2.2 =
+
+* Jigoshop Bug Fix
+
+= 2.2.1 =
+
+* WPML bug fixes
+
+= 2.2.0 =
+
+* Several bugfixes & improvements
+* Better AJAX integration with EDD & eShop
+* Various filters added for better theme integration & easier customization
+* DOMHtml warnings surpressed
 
 = 2.1.5 =
 
