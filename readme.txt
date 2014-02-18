@@ -77,6 +77,7 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Changelog ==
 
 = 2.5.1 =
+
 * WPML String Translation fix
 
 = 2.5 =
