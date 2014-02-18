@@ -39,9 +39,13 @@
 	display:block;
 }
 
-.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
-.clearfix {display: inline-block;}
+.wpmenucart .clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.wpmenucart .clearfix {display: inline-block;}
 /* Hides from IE-mac \*/
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
+* html .wpmenucart .clearfix {height: 1%;}
+.wpmenucart .clearfix {display: block;}
 /* End hide from IE-mac */
+/* Force Inline Display */
+li.wpmenucartli a.wpmenucart-contents span{
+	display: inline-block;
+}

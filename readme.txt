@@ -1,10 +1,10 @@
 === WP Menu Cart ===
 Contributors: jprummer, pomegranate
-Donate link: https://www.wpovernight.com/donate
+Donate link: https://www.wpovernight.com/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
 Requires at least: 3.4
-Tested up to: 3.7.1
-Stable tag: 2.2.2
+Tested up to: 3.8.1
+Stable tag: 2.5
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop
 
@@ -25,11 +25,13 @@ Pro Version Includes:
 
 * A choice of over 10 cart icons
 * A fully featured cart details flyout
-* Ability to add cart + flyout for up to 3 menus
+* Ability to add cart + flyout for unlimited menus
 * Ability to add a custom css class
 * Automatic updates on any great new features
+* Shortcode to display cart *anywhere* on your site
+* Quick and thorough support
 
-**Download the Pro version here - https://wpovernight.com/shop/wp-menu-cart-pro/**
+**Download the Pro version here - https://wpovernight.com/downloads/menu-cart-pro/**
 
 Finally, the cart automatically conforms to your site's styles, leaving you with no extra work.
 
@@ -53,9 +55,11 @@ Translations:
 * Polish
 * Portuguese
 * Russian
-* Spanish
+* Spanish[1]
 * Swedish
+* Persian
 
+[1] WebHostingHub
 == Installation ==
 
 Delete any old installations of the plugin. Extract the zip file and just drop the contents in the wp-content/plugins/ directory of your WordPress installation and then activate the Plugin from Plugins page.
@@ -71,6 +75,13 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.5 =
+
+* Improved WPML compatibility
+* Theme 2014 compatiblity
+* Improved settings page
+* Improved menu CSS
 
 = 2.2.2 =
 

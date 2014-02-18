@@ -3,7 +3,7 @@
 Plugin Name: WP Menu Cart
 Plugin URI: www.wpovernight.com/plugins
 Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
-Version: 2.2.2
+Version: 2.5
 Author: Jeremiah Prummer, Ewout Fernhout
 Author URI: www.wpovernight.com/
 License: GPL2
@@ -21,77 +21,190 @@ class WpMenuCart {
 		self::$plugin_slug = basename(dirname(__FILE__));
 		self::$plugin_basename = plugin_basename(__FILE__);
 
-		$this->includes();
-		register_activation_hook( __FILE__, array( 'WpMenuCart_Settings', 'default_settings' ) );
 		$this->options = get_option('wpmenucart');
-		$this->settings = new WpMenuCart_Settings();
-		
-		//print_r($this->options);
-		
-		if (isset($this->options['shop_plugin'])) {
-			switch ($this->options['shop_plugin']) {
-				case 'woocommerce':
-					include_once( 'includes/wpmenucart-woocommerce.php' );
-					$this->shop = new WPMenuCart_WooCommerce();
-					break;
-				case 'jigoshop':
-					include_once( 'includes/wpmenucart-jigoshop.php' );
-					$this->shop = new WPMenuCart_Jigoshop();
-					break;
-				case 'wp-e-commerce':
-					include_once( 'includes/wpmenucart-wpec.php' );
-					$this->shop = new WPMenuCart_WPEC();
-					add_action("wp_enqueue_scripts", array( &$this, 'load_jquery' ), 0 );
-					break;
-				case 'eshop':
-					include_once( 'includes/wpmenucart-eshop.php' );
-					$this->shop = new WPMenuCart_eShop();
-					add_action("wp_enqueue_scripts", array( &$this, 'load_jquery' ), 0 );
-					break;
-				case 'easy-digital-downloads':
-					include_once( 'includes/wpmenucart-edd.php' );
-					$this->shop = new WPMenuCart_EDD();
-					add_action("wp_enqueue_scripts", array( &$this, 'load_jquery' ), 0 );
-					break;
-			}
-		}
-				
-		add_action( 'plugins_loaded', array( &$this, 'wpmenucart_languages' ), 0 );
-		add_action( 'init', array( &$this, 'wpmenucart_wpml' ), 0 );
 
-		add_action('wp_print_styles', array( &$this, 'load_styles' ), 0 );
-		add_action('wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
-		add_action('wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
+		// load the localisation & classes
+		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
+		add_action( 'init', array( &$this, 'wpml' ), 0 );
+		add_action( 'init', array( $this, 'load_classes' ) );
 
-		//grab menu names
-		if ( isset( $this->options['menu_name_1'] ) && $this->options['menu_name_1'] != '0' ) {
-			add_filter( 'wp_nav_menu_' . $this->options['menu_name_1'] . '_items', array( &$this, 'add_itemcart_to_menu' ) , 10, 2 );
-		}
+		// enqueue scripts & ajax
+		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load scripts
+		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
+		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
+		add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
 
-		add_filter('add_to_cart_fragments', array( &$this, 'wpmenucart_add_to_cart_fragment' ) );
+		// add filters to selected menus to add cart item <li>
+		add_action( 'init', array( $this, 'filter_nav_menus' ) );
+		// $this->filter_nav_menus();
 	}
 
 	/**
-	 * Load additional classes and functions
+	 * Load classes
+	 * @return void
 	 */
-	public function includes() {
+	public function load_classes() {
 		include_once( 'includes/wpmenucart-settings.php' );
+		$this->settings = new WpMenuCart_Settings();
+
+		if ( $this->good_to_go() ) {			
+			if (isset($this->options['shop_plugin'])) {
+				switch ($this->options['shop_plugin']) {
+					case 'woocommerce':
+						include_once( 'includes/wpmenucart-woocommerce.php' );
+						$this->shop = new WPMenuCart_WooCommerce();
+						break;
+					case 'jigoshop':
+						include_once( 'includes/wpmenucart-jigoshop.php' );
+						$this->shop = new WPMenuCart_Jigoshop();
+						break;
+					case 'wp-e-commerce':
+						include_once( 'includes/wpmenucart-wpec.php' );
+						$this->shop = new WPMenuCart_WPEC();
+						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						break;
+					case 'eshop':
+						include_once( 'includes/wpmenucart-eshop.php' );
+						$this->shop = new WPMenuCart_eShop();
+						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						break;
+					case 'easy-digital-downloads':
+						include_once( 'includes/wpmenucart-edd.php' );
+						$this->shop = new WPMenuCart_EDD();
+						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						break;
+				}
+			}
+		}
 	}
 
+	/**
+	 * Check if a shop is active or if conflicting old versions of the plugin are active
+	 * @return boolean
+	 */
+	public function good_to_go() {
+		$wpmenucart_shop_check = get_option( 'wpmenucart_shop_check' );
+		$active_plugins = $this->get_active_plugins();
+
+		// check for shop plugins
+		if ( !$this->is_shop_active() && $wpmenucart_shop_check != 'hide' ) {
+			add_action( 'admin_notices', array ( $this, 'need_shop' ) );
+			return FALSE;
+		}
+
+		// check for old versions
+		if ( count( $this->get_active_old_versions() ) > 0 ) {
+			add_action( 'admin_notices', array ( $this, 'woocommerce_version_active' ) );
+			return FALSE;
+		}
+
+		// we made it! good to go :o)
+		return TRUE;
+	}
+
+	/**
+	 * Return true if one ore more shops are activated.
+	 * @return boolean
+	 */
+	public function is_shop_active() {
+		if ( count($this->get_active_shops()) > 0 ) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+
+	}
+
+	/**
+	 * Get an array of all active plugins, including multisite
+	 * @return array active plugin paths
+	 */
+	public static function get_active_plugins() {
+		$active_plugins = (array) apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+		if (is_multisite()) {
+			// get_site_option( 'active_sitewide_plugins', array() ) returns a 'reversed list'
+			// like [hello-dolly/hello.php] => 1369572703 so we do array_keys to make the array
+			// compatible with $active_plugins
+			$active_sitewide_plugins = (array) array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
+			// merge arrays and remove doubles
+			$active_plugins = (array) array_unique( array_merge( $active_plugins, $active_sitewide_plugins ) );
+		}
+
+		return $active_plugins;
+	}
+	
+	/**
+	 * Get array of active shop plugins
+	 * 
+	 * @return array plugin name => plugin path
+	 */
+	public static function get_active_shops() {
+		$active_plugins = self::get_active_plugins();
+
+		$shop_plugins = array (
+			'WooCommerce'				=> 'woocommerce/woocommerce.php',
+			'Jigoshop'					=> 'jigoshop/jigoshop.php',
+			'WP e-Commerce'				=> 'wp-e-commerce/wp-shopping-cart.php',
+			'eShop'						=> 'eshop/eshop.php',
+			'Easy Digital Downloads'	=> 'easy-digital-downloads/easy-digital-downloads.php',
+		);
+		
+		// filter shop plugins & add shop names as keys
+		$active_shop_plugins = array_intersect( $shop_plugins, $active_plugins );
+
+		return $active_shop_plugins;
+	}
+
+	/**
+	 * Get array of active old WooCommerce Menu Cart plugins
+	 * 
+	 * @return array plugin paths
+	 */
+	public function get_active_old_versions() {
+		$active_plugins = $this->get_active_plugins();
+		
+		$old_versions = array (
+			'woocommerce-menu-bar-cart/wc_cart_nav.php',				//first version
+			'woocommerce-menu-bar-cart/woocommerce-menu-cart.php',		//last free version
+			'woocommerce-menu-cart/woocommerce-menu-cart.php',			//never actually released? just in case...
+			'woocommerce-menu-cart-pro/woocommerce-menu-cart-pro.php',	//old pro version
+		);
+			
+		$active_old_plugins = array_intersect( $old_versions, $active_plugins );
+				
+		return $active_old_plugins;
+	}	
+
+	/**
+	 * Fallback admin notices
+	 *
+	 * @return string Fallack notice.
+	 */
+	public function need_shop() {
+		$error = __( 'WP Menu Cart Pro could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wpmenucart' );
+		$message = sprintf('<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), __( 'Hide this notice', 'wpmenucart' ) );
+		echo $message;
+	}
+
+	public function woocommerce_version_active() {
+		$error = __( 'An old version of WooCommerce Menu Cart is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly' , 'wpmenucart' );
+		$message = '<div class="error"><p>' . $error . '</p></div>';
+		echo $message;
+	}
 
 	/**
 	 * Load translations.
 	 */
-	public function wpmenucart_languages() {
+	public function languages() {
 		load_plugin_textdomain( 'wpmenucart', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 
 	/**
-	* Register strings for WPML
+	* Register strings for WPML String Translation
 	*/
-	public function wpmenucart_wpml() {
-		if ( function_exists( 'icl_register_string' ) ) {
+	public function wpml() {
+		if ( isset($this->options['wpml_string_translation']) && function_exists( 'icl_register_string' ) ) {
 			icl_register_string('WP Menu Cart', 'item text', 'item');
 			icl_register_string('WP Menu Cart', 'items text', 'items');
 			icl_register_string('WP Menu Cart', 'empty cart text', 'your cart is currently empty');
@@ -100,39 +213,36 @@ class WpMenuCart {
 		}
 	}
 
-		
+
 	/**
-	 * Load JS
-	 */		
-	public function load_jquery() {
+	 * Load custom ajax
+	 */
+	public function load_custom_ajax() {
 		wp_enqueue_script(
 			'wpmenucart',
 			plugins_url( '/javascript/wpmenucart.js' , __FILE__ ),
 				array( 'jquery' )
 		);
-		
+
 		wp_localize_script(  
 			'wpmenucart',  
 			'wpmenucart_ajax',  
 				array(  
-   					'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
-   					'nonce' => wp_create_nonce('wpmenucart')  
+					'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
+					'nonce' => wp_create_nonce('wpmenucart')  
 				)  
 		);
-
 	}
-		
-		
+
 	/**
 	 * Load CSS
 	 */
-	public function load_styles() {				
+	public function load_scripts_styles() {
 		if (isset($this->options['icon_display'])) {
 			wp_register_style( 'wpmenucart-icons', plugins_url( '/css/wpmenucart-icons.css', __FILE__ ), array(), '', 'all' );
 			wp_enqueue_style( 'wpmenucart-icons' );
 		}
 		
-		//Check for stylesheet in theme directory
 		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
 			? get_stylesheet_directory_uri() . '/wpmenucart-main.css'
 			: plugins_url( '/css/wpmenucart-main.css', __FILE__ );
@@ -144,6 +254,29 @@ class WpMenuCart {
 		if ( wp_get_theme() == 'Twenty Twelve' ) {
 			wp_register_style( 'wpmenucart-twentytwelve', plugins_url( '/css/wpmenucart-twentytwelve.css', __FILE__ ), array(), '', 'all' );
 			wp_enqueue_style( 'wpmenucart-twentytwelve' );
+		}
+
+		//Load Stylesheet if twentyfourteen is active
+		if ( wp_get_theme() == 'Twenty Fourteen' ) {
+			wp_register_style( 'wpmenucart-twentyfourteen', plugins_url( '/css/wpmenucart-twentyfourteen.css', __FILE__ ), array(), '', 'all' );
+			wp_enqueue_style( 'wpmenucart-twentyfourteen' );
+		}		
+	}
+
+	/**
+	 * Add filters to selected menus to add cart item <li>
+	 */
+	public function filter_nav_menus() {
+		// exit if no shop class is active
+		if ( !isset($this->shop) )
+			return;
+
+		// exit if no menus set
+		if ( !isset( $this->options['menu_slugs'] ) || empty( $this->options['menu_slugs'] ) )
+			return;
+
+		if ( $this->options['menu_slugs'][1] != '0' ) {
+			add_filter( 'wp_nav_menu_' . $this->options['menu_slugs'][1] . '_items', array( &$this, 'add_itemcart_to_menu' ) , 10, 2 );
 		}
 	}
 	
@@ -157,9 +290,12 @@ class WpMenuCart {
 		
 		if ($this->get_common_li_classes($items) != '')
 			$classes .= ' ' . $this->get_common_li_classes($items);
-		
-		$classes .= (isset($this->options['custom_class']) && $this->options['custom_class'] != '') ? sprintf( ' %s', $this->options['custom_class'] ) : '';
-		
+
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+		if ( in_array( 'ubermenu/ubermenu.php', $active_plugins ) ) {
+			$classes .= ' mega-with-sub';
+		}
+			
 		// Filter for <li> item classes
 		/* Usage (in the themes functions.php):
 		add_filter('wpmenucart_menu_item_classes', 'add_wpmenucart_item_class', 1, 1);
@@ -182,6 +318,11 @@ class WpMenuCart {
 		return $items;
 	}
 
+	/**
+	 * Get a flat list of common classes from all menu items in a menu
+	 * @param  string $items nav_menu HTML containing all <li> menu items
+	 * @return string        flat (imploded) list of common classes
+	 */
 	public function get_common_li_classes($items) {
 		if (empty($items)) return;
 		
@@ -220,11 +361,10 @@ class WpMenuCart {
 		return $common_li_classes_flat;
 	}
 
-
 	/**
 	 * Ajaxify Menu Cart
 	 */
-	public function wpmenucart_add_to_cart_fragment( $fragments ) {
+	public function woocommerce_ajax_fragments( $fragments ) {
 		$fragments['a.wpmenucart-contents'] = $this->wpmenucart_menu_item();
 		return $fragments;
 	}
@@ -234,13 +374,13 @@ class WpMenuCart {
 	 */
 	public function wpmenucart_menu_item() {
 		$item_data = $this->shop->menu_item();
-		
+
 		// Check empty cart settings
 		if ($item_data['cart_contents_count'] == 0 && ( !isset($this->options['always_display']) ) ) {
 			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" href="#" style="display:none">&nbsp;</a>';
 			return $empty_menu_item;
 		}
-
+		
 		if ( function_exists( 'icl_t' ) ) {
 			//use WPML
 			$viewing_cart = icl_t('WP Menu Cart', 'hover text', 'View your shopping cart');
@@ -265,7 +405,8 @@ class WpMenuCart {
 		
 		$menu_item_a_content = '';	
 		if (isset($this->options['icon_display'])) {
-			$menu_item_a_content .= '<i class="wpmenucart-icon-shopping-cart-'.$this->options['cart_icon'].'"></i>';
+			$icon = isset($this->options['cart_icon']) ? $this->options['cart_icon'] : '0';
+			$menu_item_a_content .= '<i class="wpmenucart-icon-shopping-cart-'.$icon.'"></i>';
 		}
 		
 		switch ($this->options['items_display']) {
@@ -287,13 +428,16 @@ class WpMenuCart {
 
 		if( !empty( $menu_item ) ) return $menu_item;		
 	}
-		
-		public function wpmenucart_ajax() {
-			$variable = $this->wpmenucart_menu_item();
-			echo $variable;
-			die();
-		}
+	
+	public function wpmenucart_ajax() {
+		$variable = $this->wpmenucart_menu_item();
+		echo $variable;
+		die();
+	}
+
 }
+
+$wpMenuCart = new WpMenuCart();
 
 /**
  * Hide notifications
@@ -301,79 +445,4 @@ class WpMenuCart {
 
 if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
 	update_option( 'wpmenucart_shop_check', 'hide' );
-}
-
-/**
- * Notify user of missing shop plugins & active old versions.
- */
-
-$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-$wpmenucart_shop_check = get_option( 'wpmenucart_shop_check' );
-
-if ( count(wpmenucart_get_shop_plugins()) == 0 && $wpmenucart_shop_check != 'hide' ) {
-	add_action( 'admin_notices', 'wpmenucart_no_shop_plugin_active' );
-}
-
-if ( count(wpmenucart_check_old_versions()) > 0 ) {
-	add_action( 'admin_notices', 'wpmenucart_woocommerce_version_active' );
-}
-
-$wpMenuCart = new WpMenuCart();
-
-/**
- * Fallback notices
- *
- * @return string Fallack notice.
- */
-function wpmenucart_no_shop_plugin_active() {
-	$error = __( 'WP Menu Cart couldn\'t detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wpmenucart' );
-	$message = sprintf('<div class="error"><p>%1$s. <a href="%2$s">%3$s</a></p></div>', $error, add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), __( 'Hide this notice', 'wpmenucart' ) );
-	echo $message;
-}
-
-function wpmenucart_woocommerce_version_active() {
-	$error = __( 'An old version of WooCommerce Menu Cart is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly' , 'wpmenucart' );
-	$message = '<div class="error"><p>' . $error . '</p></div>';
-	echo $message;
-}
-
-/**
- * Get array of active shop plugins
- * 
- * @return array plugin name => plugin path
- */
-function wpmenucart_get_shop_plugins() {
-	$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-	
-	$shop_plugins = array (
-		'WooCommerce'				=> 'woocommerce/woocommerce.php',
-		'Jigoshop'					=> 'jigoshop/jigoshop.php',
-		'WP e-Commerce'				=> 'wp-e-commerce/wp-shopping-cart.php',
-		'eShop'						=> 'eshop/eshop.php',
-		'Easy Digital Downloads'	=> 'easy-digital-downloads/easy-digital-downloads.php',
-	);
-		
-	$active_shop_plugins = array_intersect($shop_plugins,$active_plugins);
-			
-	return $active_shop_plugins;
-}
-
-/**
- * Get array of active old WooCommerce Menu Cart plugins
- * 
- * @return array plugin paths
- */
-function wpmenucart_check_old_versions() {
-	$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-	
-	$wpmenucart_old_versions = array (
-		'woocommerce-menu-bar-cart/wc_cart_nav.php',				//first version
-		'woocommerce-menu-bar-cart/woocommerce-menu-cart.php',		//last free version
-		'woocommerce-menu-cart/woocommerce-menu-cart.php',			//never actually released? just in case...
-		'woocommerce-menu-cart-pro/woocommerce-menu-cart-pro.php',	//old pro version
-	);
-		
-	$wpmenucart_active_old_plugins = array_intersect($wpmenucart_old_versions,$active_plugins);
-			
-	return $wpmenucart_active_old_plugins;
 }
