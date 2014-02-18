@@ -78,10 +78,14 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 = 2.5 =
 
-* Improved WPML compatibility
-* Theme 2014 compatiblity
-* Improved settings page
-* Improved menu CSS
+* Mayor Code refactor: CLEANER, FASTER, MORE FLEXIBLE!
+* Added: Shop detection for Multisite
+* Added: WPML String Translation setting
+* Added: Persian translations
+* Updated: Font Awesome
+* Updated: Spanish, Portugese, Brazilian, French & Polish Translations
+* Fix: PHP strict warnings
+* FIX: CSS for Twenty Twelve & Twenty Fourteen
 
 = 2.2.2 =
 
