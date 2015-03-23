@@ -61,6 +61,7 @@ Translations:
 * Greek
 * Czech
 * Norwegian
+* Slovak
 
 [1] WebHostingHub
 == Installation ==
